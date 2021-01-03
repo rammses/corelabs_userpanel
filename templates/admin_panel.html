@@ -7,6 +7,17 @@
 			  crossorigin="anonymous"></script>
 <!------ Include the above in your HEAD tag ---------->
 
+<header>
+    <script language="JavaScript">
+        function search(string){
+                            window.find(string);
+                            }
+    </script>
+    <a href="http://127.0.0.2:1234/logout" style="float: right;">Logout</a>
+    <input placeholder="Sayfa içi arama" type="text" id="search">
+    <input type="button" value="Bul" onclick="search(document.getElementById('search').value)">
+</header>
+
 <section id="tabs" class="project-tab">
             <div class="container">
             <div class="row">

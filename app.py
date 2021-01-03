@@ -1,8 +1,82 @@
-from flask_table import Table, Col, LinkCol, ButtonCol
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 from tools.database import UserData
-
+import flask_login
 app = Flask(__name__)
+app.secret_key = '12qwasZX'  # Change this!
+
+login_manager = flask_login.LoginManager()
+login_manager.init_app(app)
+
+users = {'mesut@mikronet.net': {'password': '12qwasZX'}}
+class User(flask_login.UserMixin):
+    pass
+
+
+@login_manager.user_loader
+def user_loader(email):
+    if email not in users:
+        return
+
+    user = User()
+    user.id = email
+    return user
+
+
+@login_manager.request_loader
+def request_loader(request):
+    email = request.form.get('email')
+    if email not in users:
+        return
+
+    user = User()
+    user.id = email
+
+    # DO NOT ever store passwords in plaintext and always compare password
+    # hashes using constant-time comparison!
+    user.is_authenticated = request.form['password'] == users[email]['password']
+
+    return user
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return '''
+               <form action='login' method='POST'>
+                <input type='text' name='email' id='email' placeholder='email'/>
+                <input type='password' name='password' id='password' placeholder='password'/>
+                <input type='submit' name='submit'/>
+               </form>
+               '''
+    email = request.form['email']
+
+    if request.form['password'] == users[email]['password']:
+        user = User()
+        user.id = email
+        flask_login.login_user(user)
+        if 'url' in session:
+            return redirect(session['url'])
+        return redirect(url_for('protected'))
+        # return redirect(url_for('protected'))
+
+    return 'Bad login'
+
+
+@app.route('/protected')
+@flask_login.login_required
+def protected():
+    return 'Logged in as: ' + flask_login.current_user.id
+
+
+@app.route('/logout')
+def logout():
+    flask_login.logout_user()
+    return 'Logged out'
+
+@login_manager.unauthorized_handler
+def unauthorized_handler():
+    session['url'] = request.path
+    return redirect('/login')
+
 
 @app.route('/PowerOff/<uuid>')
 def poweroff(uuid):
@@ -12,7 +86,9 @@ def poweroff(uuid):
 def poweron(uuid):
     return uuid
 
-@app.route('/controlpanel')
+
+@app.route('/controlpanel/', methods=['GET','POST'])
+@flask_login.login_required
 def admin_panel():
     database = UserData(server='192.168.17.131',
                     user='root',
@@ -28,7 +104,7 @@ def admin_panel():
 @app.route('/users/', methods=["POST", "GET"])
 def user_land():
     if request.method == 'GET':
-        return render_template('user_landing.html')
+        return render_template('user_landing_1.html')
     elif request.method == 'POST':
         user_mail=request.form['email']
         return redirect(url_for('user_panel', user_mail=user_mail))
