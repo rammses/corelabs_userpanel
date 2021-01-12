@@ -37,9 +37,9 @@
                                                      {%  set cell = row[j] %}
                                                      <td>
                                                      {% if cell=='stopped' %}
-                                                        <button name="powerOffButton" rowId="{{ row[7] }}" type="button" class="btn btn-danger">{{ cell }}</button>
+                                                        <button name="powerOffButton" rowId="{{ row[0] }}" type="button" class="btn btn-danger">{{ cell }}</button>
                                                      {% elif cell == 'running'  %}
-                                                        <button name="powerOnButton" rowId="{{ row[7] }}" type="button" class="btn btn-success">{{ cell }}</button>
+                                                        <button name="powerOnButton" rowId="{{ row[0] }}" type="button" class="btn btn-success">{{ cell }}</button>
                                                      {% else %}
                                                         {{ cell }}
                                                      {%  endif %}

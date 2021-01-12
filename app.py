@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from tools.database import UserData
 import flask_login
+import requests
+
 app = Flask(__name__)
 app.secret_key = '12qwasZX'  # Change this!
 
@@ -78,13 +80,39 @@ def unauthorized_handler():
     return redirect('/login')
 
 
-@app.route('/PowerOff/<uuid>')
+@app.route('/PowerOff/<uuid>', methods=['GET'])
 def poweroff(uuid):
-    return uuid
+    if request.method == 'GET':
+        servername = 'http://127.0.0.1:5000/PowerOff/'
+        print(servername + uuid)
+        try:
+            response = requests.post(servername + uuid)
+            print(response, response.content)
+        except Exception as e:
+            detail = {'success': 'False',
+                      'errors': e}
+            return detail
+        finally:
+            succes = 'success'
+            return succes
 
-@app.route('/PowerOn/<uuid>')
+
+@app.route('/PowerOn/<uuid>',methods=['GET'])
 def poweron(uuid):
-    return uuid
+    servername = 'http://127.0.0.1:5000/PowerOn/'
+    print(servername+uuid)
+
+    try:
+        response = requests.post(servername + uuid)
+        print(response, response.content)
+    except Exception as e:
+        detail = {'success' : 'False',
+                  'errors': e}
+        return detail
+    finally:
+        success = 'True'
+        return success
+
 
 
 @app.route('/controlpanel/', methods=['GET','POST'])

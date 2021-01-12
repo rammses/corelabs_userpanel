@@ -126,10 +126,16 @@ class UserData:
 
     def get_formatted_user_lab_data(self, users_labs):
         render_data = []
+
+        rowArray = []
         for lab in users_labs:
+            # TODO aşağıdaki gibi bir sturcture/class inşa etmen gerekiyor.
+            # row = new Row()
+            # row.users_email =
+            # row.string_it =
+
             render_member = []
             gns3_ip = None
-            lab_name = None
             new_lab_id = None
             for k, v in lab.items():
                 if k == 'fk_user_id':
@@ -141,6 +147,7 @@ class UserData:
                 else:
                     render_member.append(v)
             # statü sor
+            lab_name = None
             for k, v in lab.items():
                 if k == 'running_on':
                     gns3_ip = v
@@ -155,6 +162,7 @@ class UserData:
                     else:
                         render_member.append('stopped')
             render_data.append(tuple(render_member))
+            print(tuple(render_data))
         return tuple(render_data)
 
     def __exit__(self, exc_type, exc_val, exc_tb):
