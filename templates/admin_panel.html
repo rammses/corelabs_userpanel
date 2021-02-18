@@ -13,7 +13,7 @@
                             window.find(string);
                             }
     </script>
-    <a href="http://127.0.0.2:1234/logout" style="float: right;">Logout</a>
+    <a href="http://api.corelabs.com.tr/logout" style="float: right;">Logout</a>
     <input placeholder="Sayfa içi arama" type="text" id="search">
     <input type="button" value="Bul" onclick="search(document.getElementById('search').value)">
 </header>
@@ -70,7 +70,7 @@
                             <script language="javascript">
                                 function powerOn(id) {
                                     $.ajax({
-                                        url: "http://127.0.0.2:1234/PowerOn/" + id
+                                        url: "http://api.corelabs.com.tr/PowerOn/" + id
                                     }).then(function (data) {
                                         let currentButton = $('button[rowid="'+id+'"]');
                                         currentButton.prop('disabled', false);
@@ -83,7 +83,7 @@
                                 }
                                  function powerOff(id){
                                     $.ajax({
-                                        url: "http://127.0.0.2:1234/PowerOff/" + id
+                                        url: "http://api.corelabs.com.tr/PowerOff/" + id
                                     }).then(function (data) {
                                         let currentButton = $('button[rowid="'+id+'"]');
                                         currentButton.prop('disabled', false);
