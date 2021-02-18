@@ -1,5 +1,4 @@
 flask
 flask-table
-pymysql
 requests
 flask-login
