@@ -2,3 +2,4 @@ flask
 flask-table
 requests
 flask-login
+pymysql
