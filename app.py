@@ -87,7 +87,7 @@ def unauthorized_handler():
 @app.route('/PowerOff/<uuid>', methods=['GET'])
 def poweroff(uuid):
     if request.method == 'GET':
-        servername = 'http://api.corelabs.com.tr0/PowerOff/'
+        servername = 'http://api.corelabs.com.tr/PowerOff/'
         print(servername + uuid)
         try:
             response = requests.post(servername + uuid)
@@ -103,7 +103,7 @@ def poweroff(uuid):
 
 @app.route('/PowerOn/<uuid>', methods=['GET'])
 def poweron(uuid):
-    servername = 'http://api.corelabs.com.tr0/PowerOn/'
+    servername = 'http://api.corelabs.com.tr/PowerOn/'
     print(servername+uuid)
 
     try:
