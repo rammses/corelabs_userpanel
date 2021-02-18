@@ -59,7 +59,7 @@
                             <script language="javascript">
                                 function powerOn(id) {
                                     $.ajax({
-                                        url: "https://appi.corelabs.com.tr/PowerOn/" + id
+                                        url: "https://api.corelabs.com.tr/PowerOn/" + id
                                     }).then(function (data) {
                                         let currentButton = $('button[rowid="'+id+'"]');
                                         currentButton.prop('disabled', false);
@@ -72,7 +72,7 @@
                                 }
                                  function powerOff(id){
                                     $.ajax({
-                                        url: "https://appi.corelabs.com.tr/PowerOff/" + id
+                                        url: "https://api.corelabs.com.tr/PowerOff/" + id
                                     }).then(function (data) {
                                         let currentButton = $('button[rowid="'+id+'"]');
                                         currentButton.prop('disabled', false);
