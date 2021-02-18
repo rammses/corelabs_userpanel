@@ -90,7 +90,7 @@ def poweroff(uuid):
         servername = 'https://api.corelabs.com.tr/PowerOff/'
         print("stopping", uuid)
         try:
-            response = requests.post(servername + uuid)
+            response = requests.post(servername + uuid, verify=False)
             print(response, response.content)
         except Exception as e:
             detail = {'success': 'False',
