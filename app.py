@@ -10,6 +10,8 @@ login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
 
 users = {'mesut@mikronet.net': {'password': '12qwasZX'}}
+
+
 class User(flask_login.UserMixin):
     pass
 
@@ -25,8 +27,8 @@ def user_loader(email):
 
 
 @login_manager.request_loader
-def request_loader(request):
-    email = request.form.get('email')
+def request_loader(request1):
+    email = request1.form.get('email')
     if email not in users:
         return
 
@@ -35,9 +37,10 @@ def request_loader(request):
 
     # DO NOT ever store passwords in plaintext and always compare password
     # hashes using constant-time comparison!
-    user.is_authenticated = request.form['password'] == users[email]['password']
+    user.is_authenticated = request1.form['password'] == users[email]['password']
 
     return user
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -74,6 +77,7 @@ def logout():
     flask_login.logout_user()
     return 'Logged out'
 
+
 @login_manager.unauthorized_handler
 def unauthorized_handler():
     session['url'] = request.path
@@ -83,7 +87,7 @@ def unauthorized_handler():
 @app.route('/PowerOff/<uuid>', methods=['GET'])
 def poweroff(uuid):
     if request.method == 'GET':
-        servername = 'http://127.0.0.1:5000/PowerOff/'
+        servername = 'http://api.corelabs.com.tr0/PowerOff/'
         print(servername + uuid)
         try:
             response = requests.post(servername + uuid)
@@ -97,16 +101,16 @@ def poweroff(uuid):
             return succes
 
 
-@app.route('/PowerOn/<uuid>',methods=['GET'])
+@app.route('/PowerOn/<uuid>', methods=['GET'])
 def poweron(uuid):
-    servername = 'http://127.0.0.1:5000/PowerOn/'
+    servername = 'http://api.corelabs.com.tr0/PowerOn/'
     print(servername+uuid)
 
     try:
         response = requests.post(servername + uuid)
         print(response, response.content)
     except Exception as e:
-        detail = {'success' : 'False',
+        detail = {'success': 'False',
                   'errors': e}
         return detail
     finally:
@@ -114,14 +118,13 @@ def poweron(uuid):
         return success
 
 
-
-@app.route('/controlpanel/', methods=['GET','POST'])
+@app.route('/controlpanel/', methods=['GET', 'POST'])
 @flask_login.login_required
 def admin_panel():
     database = UserData(server='192.168.17.131',
-                    user='root',
-                    password='12qwasZX',
-                    database='core_labs')
+                        user='root',
+                        password='12qwasZX',
+                        database='core_labs')
     headings = ('owner mail', 'owner uuid', 'started on', 'expire on', 'ports', 'running on', 'lab gns3 id', 'status')
     all_labs = database.get_all_labs()
     data = database.get_formatted_lab_data(all_labs)
@@ -134,8 +137,9 @@ def user_land():
     if request.method == 'GET':
         return render_template('user_landing_1.html')
     elif request.method == 'POST':
-        user_mail=request.form['email']
+        user_mail = request.form['email']
         return redirect(url_for('user_panel', user_mail=user_mail))
+
 
 @app.route('/users/<user_mail>')
 def user_panel(user_mail):
@@ -149,8 +153,5 @@ def user_panel(user_mail):
     return render_template('user_panel.html', headings=headings, data=data)
 
 
-
 if __name__ == '__main__':
-    app.run(debug=True,
-            host='0.0.0.0',
-            port='7000')
+    app.run(debug=True)

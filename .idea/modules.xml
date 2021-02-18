@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/users.iml" filepath="$PROJECT_DIR$/.idea/users.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/corelabs_userpanel.iml" filepath="$PROJECT_DIR$/.idea/corelabs_userpanel.iml" />
     </modules>
   </component>
 </project>

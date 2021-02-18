@@ -1,7 +1,4 @@
 flask
-sqlalchemy
-flask-sqlalchemy
-flask_gridify
 flask-table
 pymysql
 requests
