@@ -88,7 +88,7 @@ def unauthorized_handler():
 def poweroff(uuid):
     if request.method == 'GET':
         servername = 'https://api.corelabs.com.tr/PowerOff/'
-        print(servername + uuid)
+        print("stopping", uuid)
         try:
             response = requests.post(servername + uuid)
             print(response, response.content)
@@ -104,19 +104,20 @@ def poweroff(uuid):
 
 @app.route('/PowerOn/<uuid>', methods=['GET'])
 def poweron(uuid):
-    servername = 'https://api.corelabs.com.tr/PowerOn/'
-    print(servername+uuid)
-
-    try:
-        response = requests.post(servername + uuid)
-        print(response, response.content)
-    except Exception as e:
-        detail = {'success': 'False',
-                  'errors': e}
-        return detail
-    finally:
-        success = 'True'
-        return success
+    if request.method == 'GET':
+        servername = 'https://api.corelabs.com.tr/PowerOn/'
+        print("starting :", uuid)
+        try:
+            response = requests.post(servername + uuid)
+            print(response, response.content)
+        except Exception as e:
+            detail = {'success': 'False',
+                      'errors': e}
+            return detail
+        finally:
+            print("successfully power off :", uuid)
+            succes = 'success'
+            return succes
 
 
 @app.route('/controlpanel/', methods=['GET', 'POST'])
