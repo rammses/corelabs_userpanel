@@ -97,6 +97,7 @@ def poweroff(uuid):
                       'errors': e}
             return detail
         finally:
+            print("successfully power off :", uuid )
             succes = 'success'
             return succes
 
